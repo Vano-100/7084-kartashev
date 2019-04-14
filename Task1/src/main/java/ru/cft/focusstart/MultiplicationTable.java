@@ -19,23 +19,28 @@ public class MultiplicationTable {
 
     private static String getMultiplicationTable(int tableSize) {
         String multiplicationTable = "";
-        int cellSymbolsCount = String.valueOf(tableSize * tableSize).length() + 1;
+        int cellSymbolsCount = String.valueOf(tableSize * tableSize).length();
         String format = "%" + cellSymbolsCount +"d";
-        String linePart = "-";
-        linePart = linePart.repeat(cellSymbolsCount);
+        String lineSeparatorPart = "-";
+        lineSeparatorPart = lineSeparatorPart.repeat(cellSymbolsCount);
 
         for (int i = 1; i < tableSize+1; i++) {
-            String line = "";
+            String lineSeparator = "";
             for (int j = 1; j < tableSize+1; j++) {
                 multiplicationTable +=  String.format(format, i * j ) + "|";
-                line += linePart + "+";
+                if (j == tableSize){
+                    lineSeparator += lineSeparatorPart;
+                    continue;
+                }
+
+                lineSeparator += lineSeparatorPart + "+";
             }
-            multiplicationTable += "\n" + line + "\n";
+            multiplicationTable += "\n" + lineSeparator + "\n";
         }
         return multiplicationTable;
     }
 
-    private static int readTableSize () throws InputMismatchException
+    private static int readTableSize() throws InputMismatchException
     {
         int tableSize = 0;
         tableSize = new Scanner(System.in).nextInt();
