@@ -1,4 +1,4 @@
-package ru.cft.focusstart;
+package ru.cft.focusstart.kartashev;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
