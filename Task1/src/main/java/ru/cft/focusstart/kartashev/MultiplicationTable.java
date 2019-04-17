@@ -4,6 +4,10 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MultiplicationTable {
+
+    private static final int MIN_TABLE_SIZE = 1;
+    private static final int MAX_TABLE_SIZE = 32;
+
     public static void main(String[] args) {
         int tableSize = 0;
         try {
@@ -18,34 +22,32 @@ public class MultiplicationTable {
     }
 
     private static String getMultiplicationTable(int tableSize) {
-        String multiplicationTable = "";
+        StringBuilder multiplicationTable = new StringBuilder();
         int cellSymbolsCount = String.valueOf(tableSize * tableSize).length();
         String format = "%" + cellSymbolsCount +"d";
-        String lineSeparatorPart = "-";
-        lineSeparatorPart = lineSeparatorPart.repeat(cellSymbolsCount);
+        String lineSeparatorPart = "-".repeat(cellSymbolsCount);
 
         for (int i = 1; i < tableSize+1; i++) {
-            String lineSeparator = "";
+            StringBuilder lineSeparator = new StringBuilder();
             for (int j = 1; j < tableSize+1; j++) {
-                multiplicationTable +=  String.format(format, i * j ) + "|";
                 if (j == tableSize){
-                    lineSeparator += lineSeparatorPart;
-                    continue;
+                    multiplicationTable.append(String.format(format, i * j));
+                    lineSeparator.append(lineSeparatorPart);
+                } else {
+                    multiplicationTable.append(String.format(format, i * j)).append("|");
+                    lineSeparator.append(lineSeparatorPart).append("+");
                 }
-
-                lineSeparator += lineSeparatorPart + "+";
             }
-            multiplicationTable += "\n" + lineSeparator + "\n";
+            multiplicationTable.append("\n").append(lineSeparator).append("\n");
         }
-        return multiplicationTable;
+        return multiplicationTable.toString();
     }
 
-    private static int readTableSize() throws InputMismatchException
-    {
-        int tableSize = 0;
+    private static int readTableSize() throws InputMismatchException {
+        int tableSize;
         tableSize = new Scanner(System.in).nextInt();
 
-        if (tableSize > 0 && tableSize < 33) {
+        if (tableSize >= MIN_TABLE_SIZE && tableSize <= MAX_TABLE_SIZE) {
             return tableSize;
         }
         else {
