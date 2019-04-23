@@ -2,9 +2,8 @@ package ru.cft.focusstart.kartashev;
 
 public class Main {
     public static void main(String[] args) {
-        Parser parser;
+        Parser parser = new Parser(args[0]);
         IPrinter printer;
-        parser = new Parser(args[0]);
         Shape inputShape = parser.getInputShape();
         if (args.length == 1) {
             printer = new ConsolePrinter();
@@ -14,6 +13,5 @@ public class Main {
             printer = new FilePrinter(args[1]);
             printer.print(inputShape.getInfo());
         }
-
     }
 }
