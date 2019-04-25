@@ -1,4 +1,4 @@
-package ru.cft.focusstart.kartashev;
+package ru.cft.focusstart.kartashev.printers;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.IOException;
 public class FilePrinter implements IPrinter {
     private String outputFileName;
 
-    FilePrinter(String outputFileName) {
+    public FilePrinter(String outputFileName) {
         this.outputFileName = outputFileName;
     }
 

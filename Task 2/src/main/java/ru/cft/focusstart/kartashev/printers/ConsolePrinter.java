@@ -1,4 +1,4 @@
-package ru.cft.focusstart.kartashev;
+package ru.cft.focusstart.kartashev.printers;
 
 public class ConsolePrinter implements IPrinter {
     @Override

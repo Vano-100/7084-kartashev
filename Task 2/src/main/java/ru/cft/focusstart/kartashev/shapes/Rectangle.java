@@ -1,11 +1,15 @@
-package ru.cft.focusstart.kartashev;
+package ru.cft.focusstart.kartashev.shapes;
 
 public class Rectangle extends Shape {
-    private ShapeType shapeType = ShapeType.Rectangle;
+    @Override
+    public ShapeType getShapeType() {
+        return ShapeType.Прямоугольник;
+    }
+
     private double width;
     private double height;
 
-    Rectangle(double side1, double side2) {
+    public Rectangle(double side1, double side2) {
         if (side1 < side2) {
             width = side1;
             height = side2;
@@ -17,9 +21,8 @@ public class Rectangle extends Shape {
 
     @Override
     public String getInfo() {
-        info += shapeType + "\nArea = " + getArea() + "\nPerimeter = " + getPerimeter() + "\nDiagonal = "
-                + getDiagonalLength() + "\nWidth = " + width + "\nHeight = " + height;
-        return info;
+        return "Тип фигуры: " + getShapeType() + "\nПлощадь = " + getArea() + "\nПериметр = " + getPerimeter() + "\nДиагональ = "
+                + getDiagonalLength() + "\nШирина = " + width + "\nДлина = " + height;
     }
 
     private String getArea() {
