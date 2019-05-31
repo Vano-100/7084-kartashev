@@ -1,5 +1,7 @@
 package ru.cft.focusstart.kartashev.gui;
 
+import ru.cft.focusstart.kartashev.sweeper.GameDifficulty;
+
 class Record {
     private String playerName;
     private GameDifficulty difficulty;

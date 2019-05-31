@@ -4,10 +4,15 @@ class FlagLayer {
     private Matrix flagMap;
     private int countOfClosedBoxes;
     private int countOfFlagedBoxes;
+    private Ranges ranges;
+
+    FlagLayer(Ranges ranges) {
+        this.ranges = ranges;
+    }
 
     void start() {
-        flagMap = new Matrix(Box.closed);
-        countOfClosedBoxes = Ranges.getSize().x * Ranges.getSize().y;
+        flagMap = new Matrix(Box.closed, ranges);
+        countOfClosedBoxes = ranges.getSize().x * ranges.getSize().y;
         countOfFlagedBoxes = 0;
     }
 
@@ -67,7 +72,7 @@ class FlagLayer {
 
     int getCountOfFlagedBoxesAround(Coord coord) {
         int count = 0;
-        for (Coord around : Ranges.getCoordsAround(coord))
+        for (Coord around : ranges.getCoordsAround(coord))
             if (flagMap.get(around) == Box.flaged) {
                 count++;
             }

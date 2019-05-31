@@ -4,15 +4,17 @@ public class Game {
     private BombLayer bombLayer;
     private FlagLayer flagLayer;
     private GameStat state;
+    private Ranges ranges;
+
+    public Game(GameDifficulty difficulty, Ranges ranges) {
+        this.ranges = ranges;
+        ranges.setSize(new Coord(difficulty.getCols(), difficulty.getRows()));
+        bombLayer = new BombLayer(difficulty.getBombs(), ranges);
+        flagLayer = new FlagLayer(ranges);
+    }
 
     public GameStat getState() {
         return state;
-    }
-
-    public Game(int cols, int rows, int bombs) {
-        Ranges.setSize(new Coord(cols, rows));
-        bombLayer = new BombLayer(bombs);
-        flagLayer = new FlagLayer();
     }
 
     public void start() {
@@ -76,7 +78,7 @@ public class Game {
     private void openBombs(Coord bombedCoord) {
         state = GameStat.BOMBED;
         flagLayer.setBombedToBox(bombedCoord);
-        for (Coord coord : Ranges.getAllCoords()) {
+        for (Coord coord : ranges.getAllCoords()) {
             if (bombLayer.get(coord) == Box.bomb) {
                 flagLayer.setOpenedToClosedBombBox(coord);
             } else {
@@ -87,7 +89,7 @@ public class Game {
 
     private void openBoxesAround(Coord coord) {
         flagLayer.setOpenedToBox(coord);
-        for (Coord around : Ranges.getCoordsAround(coord)) {
+        for (Coord around : ranges.getCoordsAround(coord)) {
             openBox(around);
         }
     }
@@ -100,17 +102,14 @@ public class Game {
     }
 
     private boolean gameOver() {
-        if (state == GameStat.PLAYING) {
-            return false;
-        }
-        return true;
+        return state != GameStat.PLAYING;
     }
 
 
     private void setOpenedToClosedBoxesAroundNumber(Coord coord) {
         if (bombLayer.get(coord) != Box.bomb)
             if (flagLayer.getCountOfFlagedBoxesAround(coord) == bombLayer.get(coord).getNumber())
-                for (Coord around : Ranges.getCoordsAround(coord))
+                for (Coord around : ranges.getCoordsAround(coord))
                     if (flagLayer.get(around) == Box.closed)
                         openBox(around);
     }

@@ -3,14 +3,16 @@ package ru.cft.focusstart.kartashev.sweeper;
 class BombLayer {
     private Matrix bombMap;
     private int totalBombs;
+    private Ranges ranges;
 
-    BombLayer(int totalBombs) {
+    BombLayer(int totalBombs, Ranges ranges) {
         this.totalBombs = totalBombs;
+        this.ranges = ranges;
         fixBombsCount();
     }
 
     void start() {
-        bombMap = new Matrix(Box.zero);
+        bombMap = new Matrix(Box.zero, ranges);
         for (int j = 0; j < totalBombs; j++)
             placeBomb();
     }
@@ -20,7 +22,7 @@ class BombLayer {
     }
 
     private void fixBombsCount() {
-        int maxBombs = Ranges.getSize().x * Ranges.getSize().y / 3;
+        int maxBombs = ranges.getSize().x * ranges.getSize().y / 3;
         if (totalBombs > maxBombs) {
             totalBombs = maxBombs;
         }
@@ -28,7 +30,7 @@ class BombLayer {
 
     private void placeBomb() {
         while (true) {
-            Coord coord = Ranges.getRandomCoord();
+            Coord coord = ranges.getRandomCoord();
             if (Box.bomb == bombMap.get(coord)) {
                 continue;
             }
@@ -39,7 +41,7 @@ class BombLayer {
     }
 
     private void incNumbersAroundBomb(Coord coord) {
-        for (Coord around : Ranges.getCoordsAround(coord)) {
+        for (Coord around : ranges.getCoordsAround(coord)) {
             if (Box.bomb != bombMap.get(around)) {
                 bombMap.set(around, bombMap.get(around).getNextNumberBox());
             }

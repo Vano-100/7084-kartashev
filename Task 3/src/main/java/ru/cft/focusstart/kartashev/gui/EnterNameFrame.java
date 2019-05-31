@@ -24,7 +24,7 @@ class EnterNameFrame extends JFrame {
 
     private JLabel createLabel() {
         JLabel label = new JLabel("Введите имя");
-        label.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
+        label.setFont(Settings.getFont());
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setPreferredSize(new Dimension(300, 30));
         return label;

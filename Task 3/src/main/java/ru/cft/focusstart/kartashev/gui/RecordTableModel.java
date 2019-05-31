@@ -6,8 +6,8 @@ import java.util.List;
 public class RecordTableModel extends AbstractTableModel {
     private List<Record> recordList;
 
-    RecordTableModel(List<Record> recordList) {
-        this.recordList = recordList;
+    RecordTableModel(Records records) {
+        this.recordList = records.getRecordList();
     }
 
     @Override
@@ -26,7 +26,14 @@ public class RecordTableModel extends AbstractTableModel {
             case 0:
                 return recordList.get(rowIndex).getPlayerName();
             case 1:
-                return recordList.get(rowIndex).getDifficulty();
+                switch (recordList.get(rowIndex).getDifficulty()) {
+                    case Beginner:
+                        return "Новичек";
+                    case Experienced:
+                        return "Опытный";
+                    case Professional:
+                        return "Профессионал";
+                }
             case 2:
                 return recordList.get(rowIndex).getTime();
             default:

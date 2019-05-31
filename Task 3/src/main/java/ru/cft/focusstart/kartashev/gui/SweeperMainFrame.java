@@ -1,33 +1,31 @@
 package ru.cft.focusstart.kartashev.gui;
 
+import ru.cft.focusstart.kartashev.sweeper.Box;
+import ru.cft.focusstart.kartashev.sweeper.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import ru.cft.focusstart.kartashev.sweeper.*;
-import ru.cft.focusstart.kartashev.sweeper.Box;
-
 public class SweeperMainFrame extends JFrame implements Callback {
+    private static GameDifficulty difficulty;
+    private final int IMAGE_SIZE = 30;
     private Game game;
     private JPanel panel;
     private JLabel bombsCountLabel;
     private JLabel timerLabel;
     private Timer timer;
-    private static int cols = 9;
-    private static int rows = 9;
-    private static int bombs = 10;
-    private static GameDifficulty difficulty = GameDifficulty.Новичек;
-    private final int IMAGE_SIZE = 30;
     private int currentTime;
-
-
-    public static void main(String[] args) {
-        new SweeperMainFrame();
-    }
+    private Records records = new Records();
+    private Ranges ranges = new Ranges();
 
     private SweeperMainFrame() {
-        game = new Game(cols, rows, bombs);
+        if (difficulty == null) {
+            changeDifficulty(GameDifficulty.Beginner);
+            return;
+        }
+        game = new Game(difficulty, ranges);
         game.start();
         setImages();
         initGamePanel();
@@ -39,6 +37,10 @@ public class SweeperMainFrame extends JFrame implements Callback {
         initFrame();
     }
 
+    public static void main(String[] args) {
+        new SweeperMainFrame();
+    }
+
     private void initMenu() {
         JMenu jMenu = new JMenu("Игра");
         JMenu levelOfDifficulty = new JMenu("Сложность");
@@ -46,9 +48,9 @@ public class SweeperMainFrame extends JFrame implements Callback {
         JMenuItem skilled = new JMenuItem("Опытный");
         JMenuItem expert = new JMenuItem("Профессионал");
         JMenuItem records = new JMenuItem("Рекорды");
-        beginner.addActionListener(e -> changeDifficulty(GameDifficulty.Новичек));
-        skilled.addActionListener(e -> changeDifficulty(GameDifficulty.Опытный));
-        expert.addActionListener(e -> changeDifficulty(GameDifficulty.Профессионал));
+        beginner.addActionListener(e -> changeDifficulty(GameDifficulty.Beginner));
+        skilled.addActionListener(e -> changeDifficulty(GameDifficulty.Experienced));
+        expert.addActionListener(e -> changeDifficulty(GameDifficulty.Professional));
         records.addActionListener(e -> showRecordTable());
         levelOfDifficulty.add(beginner);
         levelOfDifficulty.add(skilled);
@@ -62,26 +64,26 @@ public class SweeperMainFrame extends JFrame implements Callback {
     }
 
     private void showRecordTable() {
-        new RecordTable();
+        new RecordTable(records);
     }
 
     private void changeDifficulty(GameDifficulty difficulty) {
         SweeperMainFrame.difficulty = difficulty;
         switch (difficulty) {
-            case Новичек:
-                cols = 9;
-                rows = 9;
-                bombs = 10;
+            case Beginner:
+                difficulty.setCols(9);
+                difficulty.setRows(9);
+                difficulty.setBombs(10);
                 break;
-            case Опытный:
-                cols = 16;
-                rows = 16;
-                bombs = 40;
+            case Experienced:
+                difficulty.setCols(16);
+                difficulty.setRows(16);
+                difficulty.setBombs(40);
                 break;
-            case Профессионал:
-                cols = 16;
-                rows = 30;
-                bombs = 99;
+            case Professional:
+                difficulty.setCols(16);
+                difficulty.setRows(30);
+                difficulty.setBombs(99);
         }
         setVisible(false);
         dispose();
@@ -107,18 +109,18 @@ public class SweeperMainFrame extends JFrame implements Callback {
     private void initTimerLabel() {
         timerLabel = new JLabel("Время : 0");
         timerLabel.setHorizontalAlignment(JLabel.LEFT);
-        timerLabel.setPreferredSize(new Dimension((Ranges.getSize().x * IMAGE_SIZE) / 2 - 15, IMAGE_SIZE));
+        timerLabel.setPreferredSize(new Dimension((ranges.getSize().x * IMAGE_SIZE) / 2 - 15, IMAGE_SIZE));
         timerLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        timerLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
+        timerLabel.setFont(Settings.getFont());
         timerLabel.setForeground(Color.BLACK);
     }
 
     private void initBombsCountLabel() {
         bombsCountLabel = new JLabel("Бомб : " + game.getCountOfUnflagedBombs());
         bombsCountLabel.setHorizontalAlignment(JLabel.LEFT);
-        bombsCountLabel.setPreferredSize(new Dimension((Ranges.getSize().x * IMAGE_SIZE) / 2, IMAGE_SIZE));
+        bombsCountLabel.setPreferredSize(new Dimension((ranges.getSize().x * IMAGE_SIZE) / 2, IMAGE_SIZE));
         bombsCountLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        bombsCountLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 16));
+        bombsCountLabel.setFont(Settings.getFont());
         bombsCountLabel.setForeground(Color.BLACK);
         add(bombsCountLabel, BorderLayout.NORTH);
     }
@@ -128,7 +130,7 @@ public class SweeperMainFrame extends JFrame implements Callback {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                for (Coord coord : Ranges.getAllCoords())
+                for (Coord coord : ranges.getAllCoords())
                     g.drawImage((Image) game.getBox(coord).image, coord.x * IMAGE_SIZE,
                             coord.y * IMAGE_SIZE, IMAGE_SIZE, IMAGE_SIZE, this);
             }
@@ -156,7 +158,7 @@ public class SweeperMainFrame extends JFrame implements Callback {
                 panel.repaint();
             }
         });
-        panel.setPreferredSize(new Dimension(Ranges.getSize().x * IMAGE_SIZE, Ranges.getSize().y * IMAGE_SIZE));
+        panel.setPreferredSize(new Dimension(ranges.getSize().x * IMAGE_SIZE, ranges.getSize().y * IMAGE_SIZE));
         add(panel);
     }
 
@@ -170,7 +172,7 @@ public class SweeperMainFrame extends JFrame implements Callback {
 
     @Override
     public void onWinnerNameEntered(String name) {
-        RecordTable.addRecordToList(name, difficulty, currentTime);
+        records.addRecordToList(name, difficulty, currentTime);
         game.start();
         currentTime = 0;
         timer.start();

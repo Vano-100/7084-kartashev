@@ -3,26 +3,18 @@ package ru.cft.focusstart.kartashev.gui;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 class RecordTable extends JFrame {
 
-    private static List<Record> recordList = new ArrayList<>();
-
-    RecordTable() {
-        initFrame();
+    RecordTable(Records records) {
+        initFrame(records);
     }
 
-    static void addRecordToList(String playerName, GameDifficulty difficulty, int time) {
-        recordList.add(new Record(playerName, difficulty, time));
-    }
-
-    private void initFrame() {
+    private void initFrame(Records records) {
         setTitle("Таблица рекордов");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
-        RecordTableModel tableModel = new RecordTableModel(recordList);
+        RecordTableModel tableModel = new RecordTableModel(records);
         JTable table = new JTable(tableModel);
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
