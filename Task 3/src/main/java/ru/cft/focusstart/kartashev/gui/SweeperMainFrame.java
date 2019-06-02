@@ -1,6 +1,5 @@
 package ru.cft.focusstart.kartashev.gui;
 
-import ru.cft.focusstart.kartashev.sweeper.Box;
 import ru.cft.focusstart.kartashev.sweeper.*;
 
 import javax.swing.*;
@@ -27,7 +26,6 @@ public class SweeperMainFrame extends JFrame implements Callback {
         }
         game = new Game(difficulty, ranges);
         game.start();
-        setImages();
         initGamePanel();
         initBombsCountLabel();
         initTimerLabel();
@@ -131,7 +129,7 @@ public class SweeperMainFrame extends JFrame implements Callback {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 for (Coord coord : ranges.getAllCoords())
-                    g.drawImage((Image) game.getBox(coord).image, coord.x * IMAGE_SIZE,
+                    g.drawImage(game.getBox(coord).imageIcon.getImage(), coord.x * IMAGE_SIZE,
                             coord.y * IMAGE_SIZE, IMAGE_SIZE, IMAGE_SIZE, this);
             }
         };
@@ -184,19 +182,8 @@ public class SweeperMainFrame extends JFrame implements Callback {
         setTitle("Сапёр");
         setResizable(false);
         setVisible(true);
-        setIconImage(getImage("icon"));
+        setIconImage(new ImageIcon(getClass().getResource("/img/icon.png")).getImage());
         setLocationRelativeTo(null);
         pack();
-    }
-
-    private void setImages() {
-        for (Box box : Box.values())
-            box.image = getImage(box.name().toLowerCase());
-    }
-
-    private Image getImage(String name) {
-        String filename = "/img/" + name + ".png";
-        ImageIcon icon = new ImageIcon(getClass().getResource(filename));
-        return icon.getImage();
     }
 }
