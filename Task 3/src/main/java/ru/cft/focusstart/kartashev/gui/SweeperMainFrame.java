@@ -8,7 +8,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class SweeperMainFrame extends JFrame implements Callback {
-    private static GameDifficulty difficulty;
+
+    private static GameDifficulty difficulty = GameDifficulty.Beginner;
     private final int IMAGE_SIZE = 30;
     private Game game;
     private JPanel panel;
@@ -20,10 +21,6 @@ public class SweeperMainFrame extends JFrame implements Callback {
     private Ranges ranges = new Ranges();
 
     private SweeperMainFrame() {
-        if (difficulty == null) {
-            changeDifficulty(GameDifficulty.Beginner);
-            return;
-        }
         game = new Game(difficulty, ranges);
         game.start();
         initGamePanel();
@@ -67,22 +64,6 @@ public class SweeperMainFrame extends JFrame implements Callback {
 
     private void changeDifficulty(GameDifficulty difficulty) {
         SweeperMainFrame.difficulty = difficulty;
-        switch (difficulty) {
-            case Beginner:
-                difficulty.setCols(9);
-                difficulty.setRows(9);
-                difficulty.setBombs(10);
-                break;
-            case Experienced:
-                difficulty.setCols(16);
-                difficulty.setRows(16);
-                difficulty.setBombs(40);
-                break;
-            case Professional:
-                difficulty.setCols(16);
-                difficulty.setRows(30);
-                difficulty.setBombs(99);
-        }
         setVisible(false);
         dispose();
         new SweeperMainFrame();

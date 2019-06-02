@@ -8,8 +8,8 @@ public class Game {
 
     public Game(GameDifficulty difficulty, Ranges ranges) {
         this.ranges = ranges;
-        ranges.setSize(new Coord(difficulty.getCols(), difficulty.getRows()));
-        bombLayer = new BombLayer(difficulty.getBombs(), ranges);
+        ranges.setSize(new Coord(difficulty.cols, difficulty.rows));
+        bombLayer = new BombLayer(difficulty.bombs, ranges);
         flagLayer = new FlagLayer(ranges);
     }
 
