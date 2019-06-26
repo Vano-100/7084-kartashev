@@ -4,7 +4,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 class Consumers {
-    private final int CONSUMERS_QUANTITY = 3;
+    private final int CONSUMERS_QUANTITY = 1;
     private ExecutorService service = Executors.newFixedThreadPool(CONSUMERS_QUANTITY);
 
 

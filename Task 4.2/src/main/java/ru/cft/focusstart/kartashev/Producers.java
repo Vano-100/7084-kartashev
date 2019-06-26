@@ -4,7 +4,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
  class Producers {
     static final int PRODUCTION_TIME = 4000;
-    private final int PRODUCERS_QUANTITY = 6;
+    private final int PRODUCERS_QUANTITY = 1;
     private ExecutorService service = Executors.newFixedThreadPool(PRODUCERS_QUANTITY);
 
 

@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Producer implements Runnable {
-    private final int STOCK_OVERFLOW_WAITING_TIME = 10000;
+
     private static AtomicInteger nextId = new AtomicInteger(0);
     private int id;
     private boolean isWorking = true;
@@ -31,13 +31,12 @@ public class Producer implements Runnable {
                     System.out.printf(new Date() + "| Производитель с ID %d был прерван\n", id);
                 }
             } else {
-                try {
-                    isWorking = false;
-                    System.out.printf(new Date() + "| Производитель с ID = %d ожидает освобождение склада\n", id);                    Thread.sleep(STOCK_OVERFLOW_WAITING_TIME);
-
-                } catch (InterruptedException e) {
-                    System.out.printf(new Date() + "| Производитель с ID %d был прерван\n", id);
+                if (isWorking) {
+                    System.out.printf(new Date() + "| Производитель с ID = %d ожидает освобождение склада\n", id);
                 }
+                isWorking = false;
+                // Thread.sleep(100);
+
             }
         }
     }

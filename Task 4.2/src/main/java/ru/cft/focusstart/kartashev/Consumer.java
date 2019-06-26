@@ -4,15 +4,15 @@ import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Consumer implements Runnable {
-    private static final int CONSUMPTION_TIME = 5000;
+    private static final int CONSUMPTION_TIME = 3000;
     private static AtomicInteger nextId = new AtomicInteger(0);
     private int id;
     private boolean isConsuming = true;
 
-
     Consumer() {
         id = nextId.getAndIncrement();
     }
+
     @Override
     public void run() {
         while (true) {
@@ -31,9 +31,11 @@ public class Consumer implements Runnable {
 
             } else {
                 try {
+                    if (isConsuming) {
+                        System.out.printf(new Date() + "| Потребитель с ID = %d ожидает пополнения склада\n", id);
+                    }
                     isConsuming = false;
-                    System.out.printf(new Date() + "| Потребитель с ID = %d ожидает пополнения склада\n", id);
-                    Thread.sleep(5000);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     System.out.printf(new Date() + "| Потребитель с ID %d был прерван\n", id);
                 }
