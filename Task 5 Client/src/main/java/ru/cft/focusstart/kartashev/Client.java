@@ -99,7 +99,7 @@ class Client {
 
     String[] getUserList() throws IOException {
         String userList;
-        writer.println(ServerInfo.GET_USERS_LIST);
+        writer.println(ServerInfo.GET_USER_LIST);
         if ((userList = reader.readLine()).startsWith(ServerInfo.USERS_LIST)) {
             return (userList.replace(ServerInfo.USERS_LIST, "").split(";"));
         }
