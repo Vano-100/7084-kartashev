@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+jar {
+    manifest {
+        attributes 'Main-Class': 'ru.cft.focusstart.kartashev.Main'
+    }
+}
+
+version 'unspecified'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    manifest {
+        attributes 'Main-Class': 'ru.cft.focusstart.kartashev.Main'
+    }
+}
+
+
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
