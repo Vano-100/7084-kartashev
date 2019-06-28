@@ -51,6 +51,15 @@ class Client {
                         if ((message = reader.readLine()).startsWith(ServerInfo.COMMON_MESSAGE)) {
                             callback.onNewMessageReceived(message.replace(ServerInfo.COMMON_MESSAGE, ""));
                         }
+
+                        if (message.startsWith(ServerInfo.NEW_USER_CONNECTED)) {
+                            callback.onNewUserConnected(message.replace(ServerInfo.NEW_USER_CONNECTED, ""));
+                        }
+
+                        if (message.startsWith(ServerInfo.USER_DISCONNECTED)) {
+                            callback.onUserDisconnected(message.replace(ServerInfo.USER_DISCONNECTED, ""));
+                        }
+
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -110,6 +119,10 @@ class Client {
         writer.println(ServerInfo.DISCONNECT);
         messageListenerThread.interrupt();
         socket.close();
+    }
+
+    String getUserName() {
+        return userName;
     }
 
 

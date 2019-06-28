@@ -43,6 +43,7 @@ class Server {
 
         Thread messageListenerThread = new Thread(() -> {
             isServerStarted = true;
+            System.out.println("Сервер запущен.");
             boolean interrupted = false;
             while (!interrupted) {
                 try {
@@ -122,15 +123,14 @@ class Server {
             return true;
         } else {
             client.getWriter().println(ServerInfo.ERROR + "Пользователь с таким именем уже подключен");
+            return false;
         }
-        return true;
     }
 
     private void handleNewClientConnection(Client client) {
-        String message = "Подключился пользователь "
-                + client.getUserName() + ". Поприветствуем!";
-        sendMessageToAll(ServerInfo.COMMON_MESSAGE + message);
-        addRecentMessageToList(message);
+        sendMessageToAll(ServerInfo.NEW_USER_CONNECTED + client.getUserName());
+        addRecentMessageToList("Подключился пользователь "
+                + client.getUserName() + ". Поприветствуем!");
     }
 
     private void handleClientLogin(String userName, Client client) throws IOException {
@@ -141,9 +141,8 @@ class Server {
     }
 
     private void handleClientDisconnection(Client client) throws IOException {
-        String message = client.getUserName() + " отключился.";
-        sendMessageToAll(ServerInfo.COMMON_MESSAGE + message);
-        recentMessages.add(message);
+        sendMessageToAll(ServerInfo.USER_DISCONNECTED + client.getUserName());
+        recentMessages.add(client.getUserName() + " отключился.");
         clientsToRemove.add(client);
         client.getSocket().close();
     }

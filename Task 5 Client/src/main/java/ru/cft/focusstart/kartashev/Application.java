@@ -67,4 +67,17 @@ public class Application implements UICallback, ClientCallback {
         chatFrame.addMessage(message);
     }
 
+    @Override
+    public void onNewUserConnected(String userName) {
+        if (!userName.equals(client.getUserName())) {
+            chatFrame.addUserToList(userName);
+        }
+        chatFrame.addMessage("Подключился пользователь " + userName + ". Поприветствуем!");
+    }
+
+    @Override
+    public void onUserDisconnected(String userName) {
+        chatFrame.removeUserFromList(userName);
+    }
+
 }

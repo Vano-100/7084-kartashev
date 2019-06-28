@@ -196,8 +196,13 @@ public class ChatFrame extends JFrame {
         return splitMessage;
     }
 
-    private void addUserToList(String userName) {
+    public void addUserToList(String userName) {
         usersListModel.addElement(userName);
+        repaint();
+    }
+
+    public void removeUserFromList(String userName) {
+        usersListModel.removeElement(userName);
         repaint();
     }
 

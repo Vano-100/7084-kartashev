@@ -2,6 +2,16 @@ plugins {
     id 'java'
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'ru.cft.focusstart.kartashev.Main'
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'    
+}
+
 version 'unspecified'
 
 sourceCompatibility = 1.8

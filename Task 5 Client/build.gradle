@@ -3,7 +3,7 @@ plugins {
 }
 jar {
     manifest {
-        attributes 'Main-Class': 'ru.cft.focusstart.kartashev.Main'
+        attributes 'Main-Class': 'ru.cft.focusstart.kartashev.Application'
     }
 }
 

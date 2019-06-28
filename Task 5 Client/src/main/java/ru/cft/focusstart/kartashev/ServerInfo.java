@@ -9,4 +9,6 @@ class ServerInfo {
     static final String GET_USER_LIST = "GET_USER_LIST";
     static final String USERS_LIST = "USERS_LIST =";
     static final String DISCONNECT = "DISCONNECT";
+    static final String NEW_USER_CONNECTED = "NEW_USER_CONNECTED";
+    static final String USER_DISCONNECTED = "USER_DISCONNECTED";
 }

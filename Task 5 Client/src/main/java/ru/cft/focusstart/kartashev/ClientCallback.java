@@ -6,4 +6,8 @@ public interface ClientCallback {
     void onSuccessfulConnect();
 
     void onNewMessageReceived(String message);
+
+    void onNewUserConnected(String userName);
+
+    void onUserDisconnected(String userName);
 }
