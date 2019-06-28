@@ -3,6 +3,9 @@ package ru.cft.focusstart.kartashev;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 
 class Client {
 
@@ -14,6 +17,7 @@ class Client {
     private PrintWriter writer;
     private BufferedReader reader;
     private Thread messageListenerThread;
+    private Calendar calendar = new GregorianCalendar();
 
     Client(String userName, String serverAddress, ClientCallback callback) throws ApplicationException {
         this.userName = userName;
@@ -76,8 +80,12 @@ class Client {
     }
 
     void sendMessage(String message) {
+        writer.println(ServerInfo.COMMON_MESSAGE + userName + " : " + setDate(message));
+    }
 
-        writer.println(ServerInfo.COMMON_MESSAGE + userName + " : " + message);
+    private String setDate(String message) {
+        String date = String.format("%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
+        return message + "     |" + date + "|";
     }
 
 
