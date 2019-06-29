@@ -9,7 +9,6 @@ public class Producer implements Runnable {
     private int id;
     private boolean isWorking = true;
 
-
     Producer() {
         id = nextId.getAndIncrement();
     }
@@ -17,10 +16,10 @@ public class Producer implements Runnable {
     @Override
     public void run() {
         while (true) {
-            if (!Stock.isFull.get()) {
+            if (!Stock.isFull()) {
                 if (!isWorking) {
                     isWorking = true;
-                    System.out.printf(new Date() + "| Производитель с ID = %d возмобновляет работу\n", id);
+                    System.out.printf(new Date() + "| Производитель с ID = %d возобновляет работу\n", id);
                 }
                 Product product = new Product();
                 System.out.printf(new Date() + "| Продукт с ID = %d выпущен производителем с ID = %d\n", product.getId(), id);
@@ -35,8 +34,6 @@ public class Producer implements Runnable {
                     System.out.printf(new Date() + "| Производитель с ID = %d ожидает освобождение склада\n", id);
                 }
                 isWorking = false;
-                // Thread.sleep(100);
-
             }
         }
     }
